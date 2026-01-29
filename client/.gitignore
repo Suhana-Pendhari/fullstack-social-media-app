@@ -11,17 +11,20 @@ lerna-debug.log*
 node_modules/
 
 # Build output
+build/
 dist/
 dist-ssr/
-build/
 
-# Local env files
-*.local
+# Code coverage
+coverage/
+
+# Environment variables
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+*.local
 
 # Editor directories and files
 .vscode/*
@@ -38,6 +41,5 @@ Thumbs.db
 *.njsproj
 *.sln
 
-# Other
+# Other temporary files
 *.sw?
-coverage/
