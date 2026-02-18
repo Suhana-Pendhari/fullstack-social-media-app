@@ -4,20 +4,39 @@ import Loading from '../components/Loading';
 import StoriesBar from '../components/StoriesBar';
 import PostCard from '../components/PostCard';
 import RecentMessages from '../components/RecentMessages';
+import { useAuth } from '@clerk/clerk-react';
+import api from '../api/axios';
+import toast from 'react-hot-toast';
 
 const Feed = () => {
 
   const [feeds, setFeeds] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { getToken } = useAuth();
 
   const fetchFeeds = async () => {
-    setFeeds(dummyPostsData);
-    setLoading(false);
+    try {
+      setLoading(true)
+      const { data } = await api.get('/api/post/feed', {
+        headers: {
+          Authorization:
+            `Bearer ${await getToken()}`
+        }
+      })
+      if (data.success) {
+        setFeeds(data.posts)
+      } else {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
+    setLoading(false)
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchFeeds();
-  },[])
+  }, [])
 
   return !loading ? (
     <div className='h-full overflow-y-scroll no-scrollbar py-10 xl:pr-5 flex items-start justify-center xl:gap-8'>
@@ -25,8 +44,8 @@ const Feed = () => {
       <div>
         <StoriesBar />
         <div className='p-4 space-y-6'>
-          {feeds.map((post)=>(
-            <PostCard key={post._id} post={post}/>
+          {feeds.map((post) => (
+            <PostCard key={post._id} post={post} />
           ))}
         </div>
       </div>
@@ -39,10 +58,10 @@ const Feed = () => {
           <p className='text-slate-600'>Email marketing</p>
           <p className='text-slate-400'>Supercharge your marketing with powerful, easy-to-use platform built for results.</p>
         </div>
-        <RecentMessages/>
+        <RecentMessages />
       </div>
     </div>
-  ): <Loading />
+  ) : <Loading />
 }
 
 export default Feed
