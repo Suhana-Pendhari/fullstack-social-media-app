@@ -219,7 +219,7 @@ export const getUserConnections = async (req, res) => {
     try {
         const { userId } = req.auth();
         const user = await User.findById(userId).populate('connections followers following');
-        const connections = user.collections
+        const connections = user.connections
         const followers = user.followers
         const following = user.following
 
@@ -232,6 +232,7 @@ export const getUserConnections = async (req, res) => {
         res.json({ success: false, message: error.message });
     }
 }
+
 
 // Accept Connection Request
 export const acceptConnectionRequest = async (req, res) => {

@@ -17,7 +17,7 @@ async (token) => {
 })
 
 const connectionsSlice = createSlice({
-    name: 'messages',
+    name: 'connections',
     initialState,
     reducers: {
 

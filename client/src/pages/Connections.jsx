@@ -65,11 +65,20 @@ const Connections = () => {
     }
   }
 
+  // useEffect(() => {
+  //   getToken().then((token) => {
+  //     dispatch(fetchConnections(token));
+  //   })
+  // }, [])
+
   useEffect(() => {
-    getToken().then((token) => {
+    const loadConnections = async () => {
+      const token = await getToken();
       dispatch(fetchConnections(token));
-    })
-  }, [])
+    };
+
+    loadConnections();
+  }, [getToken, dispatch]);
 
   return (
     <div className='min-h-screen bg-slate-50'>
